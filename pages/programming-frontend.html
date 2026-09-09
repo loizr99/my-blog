@@ -32,20 +32,23 @@
             Dumping stuff here until I can figure out how to properly write frontend code!
         </p>
 
-        <h3 class="tutorial-title">DOM click event</h3>
-        <div id="tutorial-event-click">
-            <span>
-                Click me!
-            </span>
+        <h3 class="demo-title">DOM events</h3>
+        <div id="demo-event-click">
+            <span></span>
+        </div>
+
+        <div id="demo-event-properties">
+            
         </div>
         
     </body>
 
     <script>
-        // For 
+        // demo-event-click
         {
             let clickCount = 0;
-            let el = document.querySelector("#tutorial-event-click > span");
+            let el = document.querySelector("#demo-event-click > span");
+            el.innerHTML = "Click me!";
             el.style.cursor = "pointer";
             el.addEventListener("click", () => {
                 clickCount++;
@@ -56,6 +59,15 @@
             });
             el.addEventListener("mouseleave", () => {
                 el.style.backgroundColor = "";
+            });
+        }
+
+        // demo-event-properties
+        {
+            let el = document.querySelector("#demo-event-properties");
+            el.innerHTML = "Mouse position: ";
+            document.body.addEventListener("mousemove", (e) => {
+                el.innerHTML = "Mouse position: " + e.clientX + ", " + e.clientY;
             });
         }
     </script>
