@@ -28,6 +28,35 @@
             </ul>
         </nav>
 
-        Dumping stuff here until I can figure out how to properly write frontend code!
+        <p>
+            Dumping stuff here until I can figure out how to properly write frontend code!
+        </p>
+
+        <h3 class="tutorial-title">DOM click event</h3>
+        <div id="tutorial-event-click">
+            <span>
+                Click me!
+            </span>
+        </div>
+        
     </body>
+
+    <script>
+        // For 
+        {
+            let clickCount = 0;
+            let el = document.querySelector("#tutorial-event-click > span");
+            el.style.cursor = "pointer";
+            el.addEventListener("click", () => {
+                clickCount++;
+                el.innerHTML = "You clicked " + clickCount + " times!";
+            });
+            el.addEventListener("mouseenter", () => {
+                el.style.backgroundColor = "#333333";
+            });
+            el.addEventListener("mouseleave", () => {
+                el.style.backgroundColor = "";
+            });
+        }
+    </script>
 </html>
