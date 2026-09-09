@@ -1,10 +1,17 @@
+:root {
+    --color-background: #000000;
+    --color-text: #ffffff;
+    --color-navbar: #1f2937;
+    --color-navbar-hover: #455b7b;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
-    background-color: #000000;
-    color: white;
+    background-color: var(--color-background);
+    color: var(--color-text);
     font-family: 'Courier New', Courier, monospace;
 }
 
@@ -15,7 +22,7 @@ body {
     position: sticky;
 
     padding: 0px 10px;
-    background-color: #1f2937;
+    background-color: var(--color-navbar);
 }
 
 .navbar-logo {
@@ -23,14 +30,15 @@ body {
     align-items: center;
     justify-content: space-between;
     
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-
-.navbar-logo img {
     width: 64px;
     height: 64px;
     object-fit: contain;
+
+    font-size: 1.25rem;
+    font-weight: bold;
+
+    color: var(--color-text);
+    text-decoration: none;
 }
 
 .navbar-links {
@@ -48,12 +56,12 @@ body {
     height: 100%;
     padding: 5px 20px;
 
-    color: white;
-    text-decoration: none;
-
     transition: background-color 0.2s ease;
+
+    color: var(--color-text);
+    text-decoration: none;
 }
 
 .navbar-links a:hover {
-    background-color: #455b7b;
+    background-color: var(--color-navbar-hover);
 }
