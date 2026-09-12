@@ -109,40 +109,102 @@
 
         // demo-timer
         {
-            let el = document.querySelector("#demo-timer");
-            
-            let seconds = document.createElement("span");
-            seconds.textContent = 0;
-
-            let timerEl = document.createElement("p");
-            timerEl.appendChild(seconds);
-            timerEl.append(" seconds passed");
-
-            let timerButtonEl = document.createElement("button");
-            timerButtonEl.textContent = "Start";
-            timerButtonEl.state = {
-                "started": false
+            let timerState = {
+                "started": false,
+                "seconds": 0
             };
 
-            let intervalId = null;
+            let el = document.querySelector("#demo-timer");
+            
+            let secondsEl = document.createElement("span");
+
+            let timerEl = document.createElement("p");
+            timerEl.appendChild(secondsEl);
+            timerEl.append(" seconds passed");
+
+            // Buttons
+            let timerButtonEl = document.createElement("button");
+            timerButtonEl.textContent = "Start";
             timerButtonEl.addEventListener("click", () => {
-                if (!timerButtonEl.state.started) {
-                    timerButtonEl.state.started = true;
-                    timerButtonEl.textContent = "Stop";
-                    intervalId = window.setInterval(() => {
-                        seconds.textContent = parseInt(seconds.textContent) + 1;
-                    }, 1000);
+                if (!timerState.started) {
+                    timerState.started = true;
+                    timerButtonEl.textContent = "Pause";
                 }
                 else {
-                    timerButtonEl.state.started = false;
+                    timerState.started = false;
                     timerButtonEl.textContent = "Start";
-                    window.clearInterval(intervalId);
-                    intervalId = null;
                 }
             });
 
+            let timerResetButtonEl = document.createElement("button");
+            timerResetButtonEl.textContent = "Reset";
+            timerResetButtonEl.addEventListener("click", () => {
+                timerState.seconds = 0;
+            });
+
+            // Dusty
+            let dustyContainerEl = document.createElement("div");
+            let dustyEl = document.createElement("img");
+            dustyEl.src = "assets/dusty.png";
+            dustyEl.style.padding = "10px";
+            dustyEl.style.position = "relative";
+            
+            let dustyPositionEl = document.createElement("p");
+
+            dustyContainerEl.appendChild(dustyEl);
+            dustyContainerEl.appendChild(dustyPositionEl);
+
+            // FPS
+            let fpsEl = document.createElement("p");
+
+            // Document update
+            let last = performance.now();
+            let docUpdate = function(now) {
+                let framePeriod = now - last;
+
+                // Update seconds
+                if (timerState.started) {
+                    timerState.seconds += framePeriod / 1000;
+                }
+
+                // Update timer text
+                secondsEl.textContent = Math.round(timerState.seconds);
+
+                // Update dusty position
+                const rect = dustyEl.getBoundingClientRect();
+                const bounceInterval = 5;
+                const bounceIntervalHalf = bounceInterval / 2;
+                const secondsMod = timerState.seconds % bounceInterval 
+                const bounceX = window.outerWidth - rect.width;
+                
+                let transformX = 0;
+                let scaleX = 1;
+                if (secondsMod < bounceIntervalHalf) {
+                    offsetX = Math.round(bounceX * (secondsMod / bounceIntervalHalf));
+                    scaleX = 1;
+                }
+                else {
+                    offsetX = Math.round(bounceX * ((bounceInterval - secondsMod) / bounceIntervalHalf));
+                    scaleX = -1;
+                }
+    
+                dustyEl.style.transform = `translateX(${offsetX}px) scaleX(${scaleX})`;
+
+                dustyPositionEl.textContent = "Dusty's position: " + rect.x;
+
+                fpsEl.textContent = "Frame Period: " + (framePeriod).toFixed(2) + "ms";
+                last = now;
+
+                window.requestAnimationFrame(docUpdate);
+            }
+
+            window.requestAnimationFrame(docUpdate);
+
             el.appendChild(timerEl);
             el.appendChild(timerButtonEl);
+            el.appendChild(timerResetButtonEl);
+            el.appendChild(dustyContainerEl);
+            el.appendChild(fpsEl);
         }
     </script>
 </html>
