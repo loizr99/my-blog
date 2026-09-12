@@ -33,42 +33,116 @@
         </p>
 
         <h3 class="demo-title">DOM events</h3>
-        <div id="demo-event-click">
-            <span></span>
-        </div>
+        <div id="demo-event-click"></div>
+        <div id="demo-event-properties"></div>
 
-        <div id="demo-event-properties">
-            
-        </div>
+        <h3 class="demo-title">Window</h3>
+        <div id="demo-window"></div>
+
+        <h3 class="demo-title">DOM animations</h3>
+        <div id="demo-timer"></div>
         
     </body>
 
     <script>
         // demo-event-click
         {
+            const maxClickCount = 10;
             let clickCount = 0;
-            let el = document.querySelector("#demo-event-click > span");
-            el.innerHTML = "Click me!";
+            let el = document.createElement("span");
+            document.querySelector("#demo-event-click").appendChild(el);
+            
+            el.textContent = "Click me!";
             el.style.cursor = "pointer";
-            el.addEventListener("click", () => {
-                clickCount++;
-                el.innerHTML = "You clicked " + clickCount + " times!";
-            });
-            el.addEventListener("mouseenter", () => {
+
+            let onEnter = () => {
                 el.style.backgroundColor = "#333333";
-            });
-            el.addEventListener("mouseleave", () => {
+            }
+
+            let onLeave = () => {
                 el.style.backgroundColor = "";
-            });
+            }
+
+            let onClick = () => {
+                clickCount++;
+                if (clickCount < maxClickCount) {
+                    el.textContent = "You clicked " + clickCount + "/" + maxClickCount +" times!";
+                }
+                else {
+                    el.textContent = "You have reached the maximum click count!";
+                    el.removeEventListener("click", onClick);
+                    el.removeEventListener("mouseenter", onEnter);
+                    el.removeEventListener("mouseleave", onLeave);
+                    el.style.backgroundColor = "";
+                    el.style.cursor = "";
+                }
+            };
+
+            el.addEventListener("click", onClick);
+            el.addEventListener("mouseenter", onEnter);
+            el.addEventListener("mouseleave", onLeave);
         }
 
         // demo-event-properties
         {
             let el = document.querySelector("#demo-event-properties");
-            el.innerHTML = "Mouse position: ";
+            el.textContent = "Mouse position: ";
             document.body.addEventListener("mousemove", (e) => {
-                el.innerHTML = "Mouse position: " + e.clientX + ", " + e.clientY;
+                el.textContent = "Mouse position: " + e.clientX + ", " + e.clientY;
             });
+        }
+
+        // demo-window
+        {
+            let addParagraph = function(el, content) {
+                let newEl = document.createElement("p");
+                newEl.innerHTML = content;
+                el.appendChild(newEl);
+            }
+
+            let el = document.querySelector("#demo-window");
+            addParagraph(el, "window.location.href: " + window.location.href);
+            addParagraph(el, "window.navigator.userAgent: " + window.navigator.userAgent);
+            addParagraph(el, "window.outerWidth: " + window.outerWidth);
+            addParagraph(el, "window.outerHeight: " + window.outerHeight);
+        }
+
+        // demo-timer
+        {
+            let el = document.querySelector("#demo-timer");
+            
+            let seconds = document.createElement("span");
+            seconds.textContent = 0;
+
+            let timerEl = document.createElement("p");
+            timerEl.appendChild(seconds);
+            timerEl.append(" seconds passed");
+
+            let timerButtonEl = document.createElement("button");
+            timerButtonEl.textContent = "Start";
+            timerButtonEl.state = {
+                "started": false
+            };
+
+            let intervalId = null;
+            timerButtonEl.addEventListener("click", () => {
+                if (!timerButtonEl.state.started) {
+                    timerButtonEl.state.started = true;
+                    timerButtonEl.textContent = "Stop";
+                    intervalId = window.setInterval(() => {
+                        seconds.textContent = parseInt(seconds.textContent) + 1;
+                    }, 1000);
+                }
+                else {
+                    timerButtonEl.state.started = false;
+                    timerButtonEl.textContent = "Start";
+                    window.clearInterval(intervalId);
+                    intervalId = null;
+                }
+            });
+
+            el.appendChild(timerEl);
+            el.appendChild(timerButtonEl);
         }
     </script>
 </html>
