@@ -40,9 +40,19 @@
         <div id="demo-window"></div>
 
         <h3 class="demo-title">DOM animations</h3>
-        <div id="demo-timer"></div>
-        
+        <div id="demo-dusty"></div>
+
+        <h3 class="demo-title">Slideshow library</h3>
+        <div id="demo-slideshow">
+            <img src="assets/dusty.png" width="64px" alt="Dusty">
+            <img src="assets/logo.png" width="64px" alt="Logo">
+        </div>
+
     </body>
+
+    <!-- JS libraries -->
+    <!-- For demo-slideshow -->
+    <script src="https://cdn.jsdelivr.net/gh/pamelafox/ka-slideshow-example@master/slideshow.js"></script>
 
     <script>
         // demo-event-click
@@ -107,14 +117,14 @@
             addParagraph(el, "window.outerHeight: " + window.outerHeight);
         }
 
-        // demo-timer
+        // demo-dusty
         {
             let timerState = {
                 "started": false,
                 "seconds": 0
             };
 
-            let el = document.querySelector("#demo-timer");
+            let el = document.querySelector("#demo-dusty");
             
             let secondsEl = document.createElement("span");
 
@@ -146,6 +156,7 @@
             let dustyContainerEl = document.createElement("div");
             let dustyEl = document.createElement("img");
             dustyEl.src = "assets/dusty.png";
+            dustyEl.alt = "Dusty";
             dustyEl.style.padding = "10px";
             dustyEl.style.position = "relative";
             
@@ -205,6 +216,11 @@
             el.appendChild(timerResetButtonEl);
             el.appendChild(dustyContainerEl);
             el.appendChild(fpsEl);
+        }
+
+        // demo-slideshow
+        {
+            slideShow(document.querySelector("#demo-slideshow"));
         }
     </script>
 </html>
